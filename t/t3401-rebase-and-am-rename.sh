@@ -141,7 +141,7 @@ test_expect_success 'rebase --interactive: NO directory rename' '
 		git checkout B^0 &&
 
 		set_fake_editor &&
-		FAKE_LINES="1" test_must_fail git rebase --interactive A &&
+		test_must_fail env FAKE_LINES="1" git rebase --interactive A &&
 
 		git ls-files -s >out &&
 		test_line_count = 6 out &&
@@ -160,7 +160,7 @@ test_expect_success 'rebase (am): NO directory rename' '
 		git checkout B^0 &&
 
 		set_fake_editor &&
-		FAKE_LINES="1" test_must_fail git rebase A &&
+		test_must_fail env FAKE_LINES="1" git rebase A &&
 
 		git ls-files -s >out &&
 		test_line_count = 6 out &&
@@ -179,7 +179,7 @@ test_expect_success 'rebase --merge: NO directory rename' '
 		git checkout B^0 &&
 
 		set_fake_editor &&
-		FAKE_LINES="1" test_must_fail git rebase --merge A &&
+		test_must_fail env FAKE_LINES="1" git rebase --merge A &&
 
 		git ls-files -s >out &&
 		test_line_count = 6 out &&
