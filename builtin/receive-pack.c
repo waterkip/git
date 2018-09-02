@@ -28,6 +28,8 @@
 #include "object-store.h"
 #include "protocol.h"
 
+#include "hooks.h"
+
 static const char * const receive_pack_usage[] = {
 	N_("git receive-pack <git-dir>"),
 	NULL

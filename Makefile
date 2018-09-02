@@ -810,6 +810,7 @@ LIB_H = $(shell $(FIND) . \
 	-name Documentation -prune -o \
 	-name '*.h' -print)
 
+LIB_OBJS += hooks.o
 LIB_OBJS += abspath.o
 LIB_OBJS += advice.o
 LIB_OBJS += alias.o

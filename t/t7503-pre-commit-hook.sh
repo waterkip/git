@@ -22,13 +22,19 @@ test_expect_success '--no-verify with no hook' '
 
 # now install hook that always succeeds
 HOOKDIR="$(git rev-parse --git-dir)/hooks"
+echo $HOOKDIR
 HOOK="$HOOKDIR/pre-commit"
 mkdir -p "$HOOKDIR"
 cat > "$HOOK" <<EOF
 #!/bin/sh
+echo "hook ran";
 exit 0
 EOF
 chmod +x "$HOOK"
+
+	echo "more" >> file &&
+	git add file &&
+	git commit -m "more"
 
 test_expect_success 'with succeeding hook' '
 
@@ -134,6 +140,36 @@ test_expect_success 'check the author in hook' '
 	git commit --author="New Author <newauthor@example.com>" \
 		--allow-empty -m "by new.author via command line" &&
 	git show -s
+'
+# pre-commit.d
+# now install hook that always succeeds
+HOOKDIR="$(git rev-parse --git-dir)/hooks"
+HOOK="$HOOKDIR/pre-commit"
+mkdir -p "$HOOKDIR"
+cat > "$HOOK" <<EOF
+#!/bin/sh
+exit 0
+EOF
+chmod +x "$HOOK"
+
+#HOOKDIR="$(git rev-parse --git-dir)/hooks/pre-commit.d"
+#HOOK="$HOOKDIR/foo.hook"
+#mkdir -p "$HOOKDIR"
+#cat > "$HOOK" <<EOF
+##!/bin/sh
+#exit 0
+#EOF
+#chmod +x "$HOOK"
+
+# this seg faults.
+test_expect_success 'with succeeding hooks.d hook' '
+
+	git config hooks.multiHook true &&
+	git config --list &&
+	echo "another" >> file &&
+	git add file &&
+	test_must_fail git commit -m "another"
+
 '
 
 test_done

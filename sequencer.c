@@ -30,6 +30,7 @@
 #include "oidset.h"
 #include "commit-slab.h"
 #include "alias.h"
+#include "hooks.h"
 
 #define GIT_REFLOG_ACTION "GIT_REFLOG_ACTION"
 

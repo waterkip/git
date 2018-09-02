@@ -1491,6 +1491,11 @@ int git_default_config(const char *var, const char *value, void *dummy)
 		pack_compression_seen = 1;
 		return 0;
 	}
+	if (!strcmp(var, "hooks.multihook")) {
+		hookd_enabled = git_config_bool(var, value);
+		return 0;
+	}
+
 
 	/* Add other config variables here and to Documentation/config.txt. */
 	return 0;

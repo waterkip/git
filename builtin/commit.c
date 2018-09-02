@@ -34,6 +34,8 @@
 #include "mailmap.h"
 #include "help.h"
 
+#include "hooks.h"
+
 static const char * const builtin_commit_usage[] = {
 	N_("git commit [<options>] [--] <pathspec>..."),
 	NULL
@@ -932,7 +934,7 @@ static int prepare_to_commit(const char *index_file, const char *prefix,
 		return 0;
 	}
 
-	if (!no_verify && find_hook("pre-commit")) {
+	if (!no_verify && !has_hook("pre-commit")) {
 		/*
 		 * Re-read the index as pre-commit hook could have updated it,
 		 * and write it out as a tree.  We must do this before we invoke
@@ -1426,6 +1428,10 @@ int run_commit_hook(int editor_is_used, const char *index_file, const char *name
 	va_list args;
 	int ret;
 
+	if (has_hook(name)) {
+		return 0;
+	}
+
 	argv_array_pushf(&hook_env, "GIT_INDEX_FILE=%s", index_file);
 
 	/*
@@ -1435,7 +1441,7 @@ int run_commit_hook(int editor_is_used, const char *index_file, const char *name
 		argv_array_push(&hook_env, "GIT_EDITOR=:");
 
 	va_start(args, name);
-	ret = run_hook_ve(hook_env.argv,name, args);
+	ret = run_hooks_by_name_ve(name, hook_env.argv, args);
 	va_end(args);
 	argv_array_clear(&hook_env);
 

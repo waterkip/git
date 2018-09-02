@@ -34,6 +34,8 @@
 #include "packfile.h"
 #include "repository.h"
 
+#include "hooks.h"
+
 /**
  * Returns 1 if the file is empty or does not exist, 0 otherwise.
  */
